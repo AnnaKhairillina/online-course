@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Добавление урока</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Добавление занятия')}"></header>
+
+    <div class="card">
+        <form th:action="@{/teacher/lessons}" th:object="${form}" method="post" class="form">
+            <label>Курс
+                <select th:field="*{courseId}" required>
+                    <option value="">Выберите курс</option>
+                    <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.title + ' (' + course.subject + ')'}"></option>
+                </select>
+            </label>
+            <label>Название занятия
+                <input type="text" th:field="*{title}" required>
+            </label>
+            <label>Дата и время занятия
+                <input type="datetime-local" th:field="*{startsAt}" required>
+            </label>
+            <label>Контент урока
+                <textarea th:field="*{content}" required></textarea>
+            </label>
+            <label>Ссылка на видео
+                <input type="url" th:field="*{videoUrl}" required>
+            </label>
+            <button type="submit">Сохранить урок</button>
+            <div th:if="${#fields.hasAnyErrors()}" class="hint">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+            </div>
+        </form>
+
+        <p class="ok" th:if="${param.saved}">Урок добавлен.</p>
+    </div>
+</div>
+</body>
+</html>

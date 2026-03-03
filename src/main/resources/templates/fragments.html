@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="topbar(title)">
+    <div class="topbar">
+        <h1 th:text="${title}"></h1>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Выйти</button>
+        </form>
+    </div>
+</header>
+</body>
+</html>

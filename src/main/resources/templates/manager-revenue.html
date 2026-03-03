@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Анализ доходов</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Анализ доходов')}"/>
+
+    <div class="card">
+        <form method="get" th:action="@{/manager/revenue}" class="inline-form">
+            <label>Введите год
+                <input type="number" min="2000" max="2100" name="year" th:value="${report.year}">
+            </label>
+            <button type="submit">Показать</button>
+        </form>
+        <p class="ok">Годовая выручка: <strong th:text="${report.yearTotal}"></strong></p>
+    </div>
+
+    <div class="card" th:if="${!report.subjects.isEmpty()}">
+        <h3>Таблица доходов: месяц / предмет</h3>
+        <div class="table-scroll" th:classappend="${report.subjects.size() >= 6} ? ' scroll-enabled' : ''">
+            <table class="revenue-table" th:classappend="${report.subjects.size() >= 6} ? ' wide' : ''">
+                <thead>
+                <tr>
+                    <th class="sticky-col">Месяц</th>
+                    <th th:each="subject : ${report.subjects}" th:text="${subject}"></th>
+                    <th>Итого за месяц</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="monthNum : ${#numbers.sequence(1, 12)}">
+                    <td class="sticky-col" th:text="${months.get(monthNum)}"></td>
+                    <td th:each="subject : ${report.subjects}"
+                        th:text="${report.matrix.get(monthNum).get(subject) ?: 0}"></td>
+                    <td th:text="${report.monthTotals.get(monthNum) ?: 0}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th class="sticky-col">Итого за год</th>
+                    <th th:each="subject : ${report.subjects}"
+                        th:text="${report.subjectTotals.get(subject) ?: 0}"></th>
+                    <th th:text="${report.yearTotal ?: 0}"></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <p class="hint" th:if="${report.subjects.isEmpty()}">За выбранный год нет успешных оплат.</p>
+
+</div>
+</body>
+</html>

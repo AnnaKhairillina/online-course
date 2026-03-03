@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Прогресс</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Прогресс по курсам')}"></header>
+
+    <div class="card" th:if="${data.courses.isEmpty()}">
+        <p>Нет данных по прогрессу.</p>
+    </div>
+
+    <div class="card" th:if="${!data.courses.isEmpty()}">
+        <div class="progress-list">
+            <div class="progress-item" th:each="c : ${data.courses}">
+                <div class="progress-head">
+                    <strong th:text="${c.title}"></strong>
+                    <span th:text="${c.progress + '%'}"></span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" th:style="'width:' + ${c.progress} + '%' "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="link-btn" th:href="@{/student/home}">Назад</a>
+</div>
+</body>
+</html>

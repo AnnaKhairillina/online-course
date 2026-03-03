@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Пользователи</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Список пользователей')}"></header>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.name}"></td>
+                <td th:text="${u.email}"></td>
+                <td th:text="${u.role}"></td>
+                <td class="actions">
+                    <form th:action="@{'/admin/users/' + ${u.id} + '/edit'}" method="get">
+                        <button type="submit">Редактировать</button>
+                    </form>
+                    <form th:action="@{'/admin/users/' + ${u.id} + '/delete'}" method="post">
+                        <button type="submit" class="danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="ok" th:if="${param.updated}">Пользователь обновлен.</p>
+    <p class="ok" th:if="${okMessage}" th:text="${okMessage}"></p>
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+</div>
+</body>
+</html>

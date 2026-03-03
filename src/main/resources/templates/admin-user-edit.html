@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Редактирование пользователя</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Редактирование пользователя')}"></header>
+
+    <div class="card">
+        <p><strong>ID:</strong> <span th:text="${user.id}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+
+        <form th:action="@{'/admin/users/' + ${user.id} + '/edit'}" th:object="${form}" method="post" class="form">
+            <label>ФИО
+                <input type="text" th:field="*{name}" required>
+            </label>
+            <label>Роль
+                <select th:field="*{role}">
+                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                </select>
+            </label>
+            <button type="submit">Сохранить изменения</button>
+            <div th:if="${#fields.hasAnyErrors()}" class="hint">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+            </div>
+        </form>
+
+        <a th:href="@{/admin/users}" class="link-btn">Назад к списку</a>
+    </div>
+</div>
+</body>
+</html>

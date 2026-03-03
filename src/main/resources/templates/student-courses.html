@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Купленные курсы</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments :: topbar('Купленные курсы')}"></header>
+
+    <div class="card" th:if="${data.courses.isEmpty()}">
+        <p>У студента пока нет купленных курсов.</p>
+    </div>
+
+    <div class="card" th:if="${!data.courses.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Курс</th>
+                <th>Предмет</th>
+                <th>Цена</th>
+                <th>Дата покупки</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${data.courses}">
+                <td th:text="${c.title}"></td>
+                <td th:text="${c.subject}"></td>
+                <td th:text="${c.price}"></td>
+                <td th:text="${#temporals.format(c.enrolledAt, 'dd.MM.yyyy HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="link-btn" th:href="@{/student/home}">Назад</a>
+</div>
+</body>
+</html>
